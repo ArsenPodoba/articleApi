@@ -1,0 +1,28 @@
+.footer {
+    margin-top: 35px;
+    background-color: #eaefef;
+}
+
+.cantainer-article {
+    margin-top: 50px;
+}
+
+.img-article {
+    margin-top: 15px;
+}
+
+.card-ending-article {
+    margin-top: 25px;
+    border-bottom: #eaefef;
+}
+.dropdown-menu {
+    background-color: black;
+}
+
+.dropdown-menu .text-white:hover {
+    background-color: black;
+}
+
+.dropdown-menu .text-white:focus {
+    background-color: black;
+}

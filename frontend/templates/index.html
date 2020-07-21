@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'CSS/Original/index.css' %}">
+        <script>
+            var xhttp2 = new XMLHttpRequest();
+            xhttp2.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var data2 = JSON.parse(xhttp2.responseText);
+                    document.getElementById("userDropdown").innerHTML += data2.first_name + ' ' + data2.last_name;
+                }  
+                if (this.readyState == 4 && this.status != 200){
+                    window.location.replace("{% url 'login' %}");
+                }
+            };
+            var token = localStorage.getItem('Token');
+            xhttp2.open("GET", "http://127.0.0.1:8000/api/getuser/", true);
+            xhttp2.setRequestHeader("Authorization", "Token " + token);
+            xhttp2.send();
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var data = JSON.parse(xhttp.responseText);
+                    var list = ''; 
+                    for (var i = 0; i < data.articles.length; i++) {                        
+                        list += '<div class="container"><div class="row justify-content-center"><div class="card mb-3"><div class="row no-gutters"><div class="col-md-3"><img src="{% static "images/article1.jpeg" %}" class="card-img" alt="..."></div><div class="col-md-9"><div class="card-body"><h4 class="card-title">' + data.articles[i].title + '</h4><p class="card-text">' + data.articles[i].text.substring(0, 210) + '...' + '</p><div class="row align-items-end"><div class="col-9"><p class="card-text"><small class="text-muted">Published 46 mins ago</small></p></div><div class="col-3 text-right"><a href="http://127.0.0.1:8000/sitepage/article/' + data.articles[i].id + '" class="btn btn-primary">Read more</a></div></div></div></div></div></div></div></div>';
+                    }
+                    document.getElementById("mainContant").innerHTML += list;
+                }
+            };
+            xhttp.open("GET", "http://127.0.0.1:8000/api/articles/", true);
+            xhttp.setRequestHeader("Authorization", "Token " + token);
+            xhttp.send();
+
+            function logout() {
+                localStorage.removeItem('Token');
+                window.location.replace("{% url 'login' %}");
+            }
+        </script>
+        <title>Articles</title>
+    </head>
+    
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand">
+                    <img src="{% static 'images/images.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    BestArticle
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'addnew' %}">Add article</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Info</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-element login dropdown-toggle" href="#" id="userDropdown"
+                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="user-icon" src="{% static 'images/user-icon.png' %}" height="30" width="30">
+                            </a>
+                            <div class="dropdown-menu w-100" aria-labelledby="userDropdown">
+                                <a class="dropdown-item text-white" href="#">Profile</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-white" href="#" onclick="logout()">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <header class="jumbotron">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <blockquote class="blockquote">
+                        <p class="mb-0">Непощастило в любові, пощастить в C++</p>
+                        <footer class="blockquote-footer">Quote of the day</footer>
+                      </blockquote>
+                </div>
+              </div>
+        </header>
+        <div id="mainContant">
+        </div>
+        
+        <div class="footer">
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <a href="https://github.com/ArsenPodoba">ArsenPodoba.com</a>
+            </div>
+        </div>
+    </body>
+</html> 

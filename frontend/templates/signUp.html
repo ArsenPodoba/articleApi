@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+        <title>Login Page</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <title>Sign Up</title>
+        <script>
+            function registerRequest() {
+                var login = document.getElementById("login").value
+                var password = document.getElementById("password").value
+                var confirmPassword = document.getElementById("confirmPassword").value
+                var firstName = document.getElementById("firstName").value
+                var lastName = document.getElementById("lastName").value
+
+                if(password == confirmPassword) {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 201) {
+                            window.location.replace("{% url 'login' %}");
+                        }
+                    };
+                    xhttp.open("POST", "http://127.0.0.1:8000/api/user/");
+                    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xhttp.send(JSON.stringify({ "email": login, "password": password, "first_name": firstName, "last_name": lastName}));
+                } else {
+                    alert("Entered data is incorect")
+                }
+            }
+        </script>
+        <link rel="stylesheet" type="text/css" href="{% static 'CSS/Original/signUp.css'%}">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand">
+                    <img src="{% static 'images/images.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    BestArticle
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'articleList' %}"><span class="sr-only">(current)</span></a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login'%}">Log In<span class="sr-only">(current)</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                <div class="fadeIn first">
+                    <img src="{% static 'images/images.png' %}" width="90" height="90" class="d-inline-block align-top" alt="">
+                </div>
+                <form>
+                    <input type="text" id="login" class="fadeIn second" name="login" placeholder="email">
+                    <input type="password" id="password" class="fadeIn third" name="login" placeholder="password">
+                    <input type="password" id="confirmPassword" class="fadeIn fiveth" name="login" placeholder="confirm password">
+                    <input type="text" id="firstName" class="fadeIn sixth" name="login" placeholder="First name">
+                    <input type="text" id="lastName" class="fadeIn seventh" name="login" placeholder="Last Name">
+                    <input type="button" onclick="registerRequest()" class="fadeIn fourth" value="Sign Up">
+                </form>
+                <div id="formFooter">
+                    <a class="underlineHover" href="#">Privacy politic</a>
+                </div>   
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <a href="https://github.com/ArsenPodoba"> ArsenPodoba.com</a>
+            </div>
+        </div>
+    </body>
+</html>

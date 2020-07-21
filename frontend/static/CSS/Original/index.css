@@ -1,0 +1,16 @@
+ 
+.footer {
+    margin-top: 35px;
+    background-color: #eaefef;
+}
+.dropdown-menu {
+    background-color: black;
+}
+
+.dropdown-menu .text-white:hover {
+    background-color: black;
+}
+
+.dropdown-menu .text-white:focus {
+    background-color: black;
+}
